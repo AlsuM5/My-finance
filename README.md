@@ -6,18 +6,7 @@
 - удаление конечных пробелов (trailing-whitespace)
 
 Как пользоваться:
-- установить pre-commit с помощью команды "pip install pre-commit"
+- установить pre-commit с помощью команды ``` bash pip install pre-commit```
 - клонировать проект
 - запустить pre-commit install
 - после изменений закоммитить
-
-The ".pre-commit-config.yml" file is used before each commit for:
-- code reformatting (black
-- checking reformatting (flake8)
-- remove trailing spaces (trailing-whitespace)
-
-How used:
-- install pre-commit with command "pip install pre-commit"
-- clone a project
-- run pre-commit install
-- to commit after changing
