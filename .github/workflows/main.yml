@@ -25,7 +25,7 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
 
-      # Runs pre-commit
-      - name: Run install pre-commit
+      # Install pre-commit
+      - name: Install pre-commit
         run: pip install pre-commit
    
