@@ -8,16 +8,12 @@
 Как пользоваться:
 - установить pre-commit с помощью команды "pip install pre-commit"
 - клонировать проект
-- запустить pre-commit install
+- запустить "pre-commit install"
 - после изменений закоммитить
 
-The ".pre-commit-config.yml" file is used before each commit for:
-- code reformatting (black
-- checking reformatting (flake8)
-- remove trailing spaces (trailing-whitespace)
+## Tests
+Файл "tests.py" необходим для проверки правильности выполнения кода.
 
-How used:
-- install pre-commit with command "pip install pre-commit"
-- clone a project
-- run pre-commit install
-- to commit after changing
+Как пользоваться:
+- перед использование должен быть установлен pytest с помощью команды "pip install pytest"
+- по завершении изменений в основном файле необходимо запустить "pytest tests.py"
