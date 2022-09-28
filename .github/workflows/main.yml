@@ -1,7 +1,8 @@
 on:
   pull_request:
+    branches: ['**']
   push:
-    branches: [main, test-me-*]
+    branches: ['**']
 
 jobs:
   main:
@@ -9,8 +10,4 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - uses: actions/setup-python@v3
-    - name: install pre-commit
-    - run: pip install pre-commit
     - uses: pre-commit/action@v3.0.0
-    - name: self test action
-      uses: ./
