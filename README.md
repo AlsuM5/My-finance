@@ -6,7 +6,7 @@
 - удаление конечных пробелов (trailing-whitespace)
 
 Как пользоваться:
-- установить pre-commit с помощью команды "pip install pre-commit"
+- установить pre-commit с помощью команды ``` bash pip install pre-commit```
 - клонировать проект
 - запустить "pre-commit install"
 - после изменений закоммитить
