@@ -10,7 +10,7 @@ class Wallet:
         self.schedule_expenses = []
         self.percent_of_savings = percent_of_savings
 
-    def add_expenses(self, expens): 
+    def add_expenses(self, expens):
         self.expenses.append(expens)
         self.balance -= expens.value
 
@@ -26,14 +26,18 @@ class Wallet:
     def is_on_trec(self):
         pass
 
-    def get_amount_of_savings(self, value_income): 
-        ''' метод, который возвращает сумму отложений в зависимости от заданных 
-        процента (percent_of_savings по умолчанию 10%) отложений, доходов (Доход(value_income) - 
-        плановые расходы(sum(schedule_expenses)))''' 
+    def get_amount_of_savings(self, value_income):
+        """метод, который возвращает сумму отложений в зависимости от заданных
+        процента (percent_of_savings по умолчанию 10%) отложений, доходов (Доход(value_income) -
+        плановые расходы(sum(schedule_expenses)))"""
         if 0 < self.percent_of_savings < 100:
-            return self.percent_of_savings / 100 * (value_income - sum(self.schedule_expenses))
-        raise PercentError('Укажите процент отложений от 1 до 99 %')
-        
+            return (
+                self.percent_of_savings
+                / 100
+                * (value_income - sum(self.schedule_expenses))
+            )
+        raise PercentError("Укажите процент отложений от 1 до 99 %")
+
 
 class WalletBaseException(Exception):
     pass
@@ -47,4 +51,3 @@ class Expens:
     def __init__(self, value):
         self.value = value
         self.date = datetime.utcnow()
-
