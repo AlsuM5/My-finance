@@ -2,7 +2,9 @@ from datetime import datetime
 
 
 class Wallet:
-    def __init__(self, days_count_to_end=30, initial_balance=0, percent_of_savings=10):
+    def __init__(
+        self, days_count_to_end=30, initial_balance=0, percent_of_savings=10
+    ):
         self.expenses = []
         self.balance = initial_balance
         self.reserved_balance = 0
@@ -28,15 +30,10 @@ class Wallet:
 
     def get_amount_of_savings(self, value_income):
         """метод, который возвращает сумму отложений в зависимости от заданных
-        процента (percent_of_savings по умолчанию 10%) отложений, доходов (Доход(value_income) -
-        плановые расходы(sum(schedule_expenses)))"""
+        процента (percent_of_savings по умолчанию 10%) отложений,
+        (Доход(value_income)-плановые расходы(sum(schedule_expenses)))"""
         if 0 < self.percent_of_savings < 100:
-            return (
-                self.percent_of_savings
-                / 100
-                * (value_income - sum(self.schedule_expenses))
-            )
-        raise PercentError("Укажите процент отложений от 1 до 99 %")
+            return self.percent_of_savings
 
 
 class WalletBaseException(Exception):
