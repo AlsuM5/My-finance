@@ -20,5 +20,5 @@ def test_amount_of_saving2():
     wallet = Wallet()
     wallet.percent_of_savings = 120
     with pytest.raises(PercentError) as excinfo:
-        0 < wallet.get_amount_of_savings(30000) < 100
+        wallet.get_amount_of_savings(30000)
     assert excinfo.type is PercentError
