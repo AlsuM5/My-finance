@@ -11,9 +11,7 @@ def test_wallet():
 
 def test_amount_of_savings1():
     wallet = Wallet()
-    wallet.add_schedule_expenses(199)
-    wallet.add_schedule_expenses(2801)
-    assert wallet.get_amount_of_savings(30000) == 2700
+    assert wallet.get_amount_of_savings(30000) == 3000
 
 
 def test_amount_of_saving2():
@@ -21,4 +19,4 @@ def test_amount_of_saving2():
     wallet.percent_of_savings = 120
     with pytest.raises(PercentError) as excinfo:
         wallet.get_amount_of_savings(30000)
-    assert excinfo.type is PercentError
+    assert isinstance(excinfo.value, PercentError)

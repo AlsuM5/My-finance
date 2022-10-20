@@ -33,7 +33,12 @@ class Wallet:
         процента (percent_of_savings по умолчанию 10%) отложений,
         (Доход(value_income)-плановые расходы(sum(schedule_expenses)))"""
         if 0 < self.percent_of_savings < 100:
-            return self.percent_of_savings
+            return (
+                self.percent_of_savings
+                * (value_income - sum(self.schedule_expenses))
+                / 100
+            )
+        raise PercentError("Процент отложений должен быть от 0 до 100")
 
 
 class WalletBaseException(Exception):
