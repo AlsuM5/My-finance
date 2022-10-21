@@ -30,3 +30,15 @@ class Expens:
     def __init__(self, value):
         self.value = value
         self.date = datetime.utcnow()
+
+
+class Transaction:
+    def __init__(self, value):
+        self.value = value
+        self.date = datetime.utcnow()
+
+    def get_value(self):
+        return self.value
+
+    def __add__(self, other):
+        return self.value + other.value 
