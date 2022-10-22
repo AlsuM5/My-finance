@@ -27,6 +27,10 @@ class Wallet:
 
     def is_on_trec(self):
         pass
+        
+    def __sub__(self, other):
+        self.add_expenses(other)
+        return self
 
     def get_amount_of_savings(self, value_income):
         """метод, который возвращает сумму отложений в зависимости от заданных
@@ -50,6 +54,8 @@ class PercentError(WalletBaseException):
 
 
 class Expens:
-    def __init__(self, value):
+    def __init__(self, value, type="расходы", date=None):
         self.value = value
-        self.date = datetime.utcnow()
+        self.type = type
+        self.date = date or datetime.utcnow()
+        self.futured = self.date > datetime.utcnow()
