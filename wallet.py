@@ -5,17 +5,12 @@ class Wallet:
     def __init__(
         self, days_count_to_end=30, initial_balance=0, percent_of_savings=10
     ):
-        self.expenses = []
         self.transactions = []
         self.balance = initial_balance
         self.reserved_balance = 0
         self.days_count_to_end = days_count_to_end
         self.schedule_expenses = []
         self.percent_of_savings = percent_of_savings
-
-    def add_expenses(self, expens):
-        self.expenses.append(expens)
-        self.balance -= expens.value
 
     def get_balance(self):
         return self.balance
@@ -30,7 +25,7 @@ class Wallet:
         pass
 
     def __sub__(self, other):
-        self.add_expenses(other)
+        self.add_transaction(other)
         return self
 
     def get_amount_of_savings(self, value_income):
@@ -45,14 +40,16 @@ class Wallet:
             )
         raise PercentError("Процент отложений должен быть от 0 до 100")
 
-    def add_transaction(self, value, type="расходы", date=None):
+    def create_transaction(self, value, type="расходы", date=None):
         transaction_class = 0
         if value > 0:
             transaction_class = Income
         else:
             transaction_class = Expens
-
         transaction = transaction_class(value)
+        self.add_transaction(transaction)
+
+    def add_transaction(self, transaction):
         self.transactions.append(transaction)
         self.balance += transaction.value
 
