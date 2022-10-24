@@ -1,5 +1,5 @@
 import pytest
-from wallet import PercentError, Wallet, Expens, Transaction
+from wallet import Income, PercentError, Wallet, Expens, Transaction
 from datetime import datetime, timedelta
 
 
@@ -44,3 +44,11 @@ def test_expens_in_the_future():
     date = datetime.utcnow() + timedelta(days=1)
     expens = Expens(50, date=date)
     assert expens.futured is True
+
+
+def test_transaction():
+    wallet = Wallet(initial_balance=100)
+    wallet.add_transaction(100)
+    transaction = wallet.transactions[0]
+    assert isinstance(transaction, Income)
+    assert wallet.get_balance() == 200

@@ -6,6 +6,7 @@ class Wallet:
         self, days_count_to_end=30, initial_balance=0, percent_of_savings=10
     ):
         self.expenses = []
+        self.transactions = []
         self.balance = initial_balance
         self.reserved_balance = 0
         self.days_count_to_end = days_count_to_end
@@ -27,7 +28,7 @@ class Wallet:
 
     def is_on_trec(self):
         pass
-        
+
     def __sub__(self, other):
         self.add_expenses(other)
         return self
@@ -44,6 +45,17 @@ class Wallet:
             )
         raise PercentError("Процент отложений должен быть от 0 до 100")
 
+    def add_transaction(self, value, type="расходы", date=None):
+        transaction_class = 0
+        if value > 0:
+            transaction_class = Income
+        else:
+            transaction_class = Expens
+
+        transaction = transaction_class(value)
+        self.transactions.append(transaction)
+        self.balance += transaction.value
+
 
 class WalletBaseException(Exception):
     pass
@@ -53,21 +65,23 @@ class PercentError(WalletBaseException):
     pass
 
 
-class Expens:
+class Transaction:
     def __init__(self, value, type="расходы", date=None):
         self.value = value
         self.type = type
         self.date = date or datetime.utcnow()
         self.futured = self.date > datetime.utcnow()
 
-
-class Transaction:
-    def __init__(self, value):
-        self.value = value
-        self.date = datetime.utcnow()
-
     def get_value(self):
         return self.value
 
     def __add__(self, other):
-        return self.value + other.value 
+        return self.value + other.value
+
+
+class Expens(Transaction):
+    pass
+
+
+class Income(Transaction):
+    pass
