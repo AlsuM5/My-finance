@@ -27,7 +27,7 @@ class Wallet:
 
     def is_on_trec(self):
         pass
-        
+
     def __sub__(self, other):
         self.add_expenses(other)
         return self
