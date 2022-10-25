@@ -59,3 +59,4 @@ class Expens:
         self.type = type
         self.date = date or datetime.utcnow()
         self.futured = self.date > datetime.utcnow()
+
