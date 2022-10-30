@@ -20,5 +20,4 @@ def create_app():
         login_form = LoginForm()
         return render_template('user/login.html', page_title=title, form=login_form )
 
-
     return app
