@@ -44,6 +44,19 @@ def test_transaction():
     wallet = Wallet(initial_balance=100)
     wallet.create_transaction(100)
     transaction = wallet.transactions[0]
-    print(type(transaction))
     assert isinstance(transaction, Income)
     assert wallet.get_balance() == 200
+
+
+def test_transaction_total_expense():
+    wallet = Wallet(initial_balance=100)
+    wallet.create_transaction(100)
+    wallet.create_transaction(-19)
+    wallet.create_transaction(-20)
+    wallet.create_transaction(210)
+    assert wallet.total_value_expense == 39
+    assert wallet.total_value_income == 310
+
+
+def test_transaction_total_income():
+    pass

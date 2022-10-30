@@ -44,14 +44,23 @@ class Wallet:
         transaction_class = 0
         if value > 0:
             transaction_class = Income
+            transaction_class.get_current_month_income(value)
         else:
-            transaction_class = Expens
+            transaction_class = Expense
+            transaction_class.get_current_month_expense(value)
+
         transaction = transaction_class(value)
         self.add_transaction(transaction)
 
     def add_transaction(self, transaction):
         self.transactions.append(transaction)
         self.balance += transaction.value
+
+    def get_total_month_expense(self):
+        return Transaction.total_value_expense
+
+    def get_total_month_income(self):
+        return Transaction.total_value_income
 
 
 class WalletBaseException(Exception):
@@ -68,17 +77,30 @@ class Transaction:
         self.type = type
         self.date = date or datetime.utcnow()
         self.futured = self.date > datetime.utcnow()
+        self.total_value_expense = 0
+        self.total_value_income = 0
+
+    def get_current_month_income(self):
+        raise NotImplementedError
+
+    def get_current_month_expense(self):
+        raise NotImplementedError
 
     def get_value(self):
         return self.value
+
+    def get_list_of_all_transactions(self):
+        pass
 
     def __add__(self, other):
         return self.value + other.value
 
 
-class Expens(Transaction):
-    pass
+class Expense(Transaction):
+    def get_current_month_expense(self):
+        self.total_value_expense += abs(self.value)
 
 
 class Income(Transaction):
-    pass
+    def get_current_month_income(self):
+        self.total_value_income += self.value
