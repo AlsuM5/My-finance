@@ -11,8 +11,6 @@ class Wallet:
         self.days_count_to_end = days_count_to_end
         self.schedule_expenses = []
         self.percent_of_savings = percent_of_savings
-        self.total_value_expense = 0
-        self.total_value_income = 0
 
     def get_balance(self):
         return self.balance
@@ -92,9 +90,6 @@ class Transaction:
 
     def get_value(self):
         return self.value
-
-    def get_list_of_all_transactions(self):
-        pass
 
     def __add__(self, other):
         return self.value + other.value
