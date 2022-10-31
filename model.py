@@ -10,8 +10,7 @@ class Wallet(Base):
     balance = Column(Float)
     reserved_balance = Column(String)
     days_count_to_end = Column(Integer)
-    transactions = Column(Float)
-    transaction_id = relationship("Transaction")
+    back_populates = relationship("Transaction")
 
     def __repr__(self):
         return f"Wallet id {self.id}, balance {self.balance}"
@@ -23,7 +22,7 @@ class Transaction(Base):
     id = Column(Integer, primary_key=True)
     value = Column(Float)
     date = Column(Date)
-    type_expense = Column(String)
+    type = Column(String)
     wallet_id = Column(Integer, ForeignKey(Wallet.id))
     wallet = relationship("Wallet")
 
@@ -31,7 +30,7 @@ class Transaction(Base):
         return f"Transactions id {self.id}, balance {self.value}"
 
 
-if __name__ == "__main__":
+def create_data_base():
 
     Base.metadata.create_all(bind=engine)
     wallet_db = Wallet(balance=100000, days_count_to_end=30)
