@@ -10,7 +10,7 @@ class Wallet(Base):
     balance = Column(Float)
     reserved_balance = Column(String)
     days_count_to_end = Column(Integer)
-    back_populates = relationship("Transaction")
+    transactions = relationship("Transaction", back_populates="wallet")
 
     def __repr__(self):
         return f"Wallet id {self.id}, balance {self.balance}"
@@ -24,7 +24,7 @@ class Transaction(Base):
     date = Column(Date)
     type = Column(String)
     wallet_id = Column(Integer, ForeignKey(Wallet.id))
-    wallet = relationship("Wallet")
+    wallet = relationship("Wallet", back_populates="transactions")
 
     def __repr__(self):
         return f"Transactions id {self.id}, balance {self.value}"
