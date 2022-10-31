@@ -11,6 +11,8 @@ class Wallet:
         self.days_count_to_end = days_count_to_end
         self.schedule_expenses = []
         self.percent_of_savings = percent_of_savings
+        self.total_value_expense = 0
+        self.total_value_income = 0
 
     def get_balance(self):
         return self.balance
@@ -44,10 +46,8 @@ class Wallet:
         transaction_class = 0
         if value > 0:
             transaction_class = Income
-            transaction_class.get_current_month_income(value)
         else:
             transaction_class = Expense
-            transaction_class.get_current_month_expense(value)
 
         transaction = transaction_class(value)
         self.add_transaction(transaction)
@@ -56,11 +56,17 @@ class Wallet:
         self.transactions.append(transaction)
         self.balance += transaction.value
 
-    def get_total_month_expense(self):
-        return Transaction.total_value_expense
+    def get_current_month_expense(self):
+        total_expense = 0
+        for transaction in self.transactions:
+            total_expense += transaction.get_month_expense()
+        return total_expense
 
-    def get_total_month_income(self):
-        return Transaction.total_value_income
+    def get_current_month_income(self):
+        total_income = 0
+        for transaction in self.transactions:
+            total_income += transaction.get_month_income()
+        return total_income
 
 
 class WalletBaseException(Exception):
@@ -77,13 +83,11 @@ class Transaction:
         self.type = type
         self.date = date or datetime.utcnow()
         self.futured = self.date > datetime.utcnow()
-        self.total_value_expense = 0
-        self.total_value_income = 0
 
-    def get_current_month_income(self):
+    def get_month_income(self):
         raise NotImplementedError
 
-    def get_current_month_expense(self):
+    def get_month_expense(self):
         raise NotImplementedError
 
     def get_value(self):
@@ -97,10 +101,16 @@ class Transaction:
 
 
 class Expense(Transaction):
-    def get_current_month_expense(self):
-        self.total_value_expense += abs(self.value)
+    def get_month_expense(self):
+        return self.value
+
+    def get_month_income(self):
+        return 0
 
 
 class Income(Transaction):
-    def get_current_month_income(self):
-        self.total_value_income += self.value
+    def get_month_income(self):
+        return self.value
+
+    def get_month_expense(self):
+        return 0

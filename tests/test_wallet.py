@@ -51,12 +51,9 @@ def test_transaction():
 def test_transaction_total_expense():
     wallet = Wallet(initial_balance=100)
     wallet.create_transaction(100)
-    wallet.create_transaction(-19)
-    wallet.create_transaction(-20)
-    wallet.create_transaction(210)
-    assert wallet.total_value_expense == 39
-    assert wallet.total_value_income == 310
+    wallet.create_transaction(130)
+    wallet.create_transaction(-130)
+    wallet.create_transaction(-30)
 
-
-def test_transaction_total_income():
-    pass
+    assert wallet.get_current_month_income() == 230
+    assert wallet.get_current_month_expense() == -160
