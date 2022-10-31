@@ -5,16 +5,12 @@ class Wallet:
     def __init__(
         self, days_count_to_end=30, initial_balance=0, percent_of_savings=10
     ):
-        self.expenses = []
+        self.transactions = []
         self.balance = initial_balance
         self.reserved_balance = 0
         self.days_count_to_end = days_count_to_end
         self.schedule_expenses = []
         self.percent_of_savings = percent_of_savings
-
-    def add_expenses(self, expens):
-        self.expenses.append(expens)
-        self.balance -= expens.value
 
     def get_balance(self):
         return self.balance
@@ -27,9 +23,9 @@ class Wallet:
 
     def is_on_trec(self):
         pass
-        
+
     def __sub__(self, other):
-        self.add_expenses(other)
+        self.add_transaction(other)
         return self
 
     def get_amount_of_savings(self, value_income):
@@ -44,6 +40,32 @@ class Wallet:
             )
         raise PercentError("Процент отложений должен быть от 0 до 100")
 
+    def create_transaction(self, value, type="расходы", date=None):
+        transaction_class = 0
+        if value > 0:
+            transaction_class = Income
+        else:
+            transaction_class = Expense
+
+        transaction = transaction_class(value)
+        self.add_transaction(transaction)
+
+    def add_transaction(self, transaction):
+        self.transactions.append(transaction)
+        self.balance += transaction.value
+
+    def get_current_month_expense(self):
+        total_expense = 0
+        for transaction in self.transactions:
+            total_expense += transaction.get_month_expense()
+        return total_expense
+
+    def get_current_month_income(self):
+        total_income = 0
+        for transaction in self.transactions:
+            total_income += transaction.get_month_income()
+        return total_income
+
 
 class WalletBaseException(Exception):
     pass
@@ -53,21 +75,37 @@ class PercentError(WalletBaseException):
     pass
 
 
-class Expens:
+class Transaction:
     def __init__(self, value, type="расходы", date=None):
         self.value = value
         self.type = type
         self.date = date or datetime.utcnow()
         self.futured = self.date > datetime.utcnow()
 
+    def get_month_income(self):
+        raise NotImplementedError
 
-class Transaction:
-    def __init__(self, value):
-        self.value = value
-        self.date = datetime.utcnow()
+    def get_month_expense(self):
+        raise NotImplementedError
 
     def get_value(self):
         return self.value
 
     def __add__(self, other):
-        return self.value + other.value 
+        return self.value + other.value
+
+
+class Expense(Transaction):
+    def get_month_expense(self):
+        return self.value
+
+    def get_month_income(self):
+        return 0
+
+
+class Income(Transaction):
+    def get_month_income(self):
+        return self.value
+
+    def get_month_expense(self):
+        return 0
