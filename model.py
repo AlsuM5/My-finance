@@ -1,5 +1,6 @@
 from sqlalchemy import Column, Integer, String, Date, Float, ForeignKey
 from datetime import datetime
+from sqlalchemy.exc import SQLAlchemyError
 from db import Base, engine, db_session
 from sqlalchemy.orm import relationship
 
@@ -46,17 +47,28 @@ def add_wallet(balance, days_count_to_end=30, reserved_balance=0):
     wallet_db.days_count_to_end = days_count_to_end
     wallet_db.reserved_balance = reserved_balance
     db_session.add(wallet_db)
-    db_session.commit()
+    try:
+        db_session.commit()
+    except SQLAlchemyError:
+        db_session.rollback()
+        raise
 
 
-def add_transaction(value, type, wallet_id, date=datetime.utcnow()):
+def add_transaction(value, type, wallet_id, date=None):
     transaction = Transaction()
     transaction.value = value
-    transaction.date = date
+    if date is None:
+        transaction.date = datetime.utcnow()
+    else:
+        transaction.date = date
     transaction.type = type
     transaction.wallet_id = wallet_id
     db_session.add(transaction)
-    db_session.commit()
+    try:
+        db_session.commit()
+    except SQLAlchemyError:
+        db_session.rollback()
+        raise
 
 
 if __name__ == "__main__":
