@@ -20,7 +20,7 @@ def create_app():
         title = "Авторизация"
         login_form = LoginForm()
         return render_template(
-            "user/login.html", page_title=title, form=login_form 
+            "user/login.html", page_title=title, form=login_form
             )
 
     return app
