@@ -13,7 +13,7 @@ def create_app():
         wallet = Wallet(initial_balance=121222)
         return render_template(
             "page/index.html", page_title=page_title, wallet=wallet
-            )
+        )
 
     @app.route("/login")
     def login():
@@ -21,6 +21,6 @@ def create_app():
         login_form = LoginForm()
         return render_template(
             "user/login.html", page_title=title, form=login_form
-            )
+        )
 
     return app
