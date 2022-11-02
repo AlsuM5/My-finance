@@ -109,4 +109,3 @@ class Income(Transaction):
 
     def get_month_expense(self):
         return 0
-

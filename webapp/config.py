@@ -1,2 +1,2 @@
 import os
-SECRET_KEY = os.environ.get("GH8hiuhiHKHO&*YYUGh987y6tfbkh&")
+SECRET_KEY = os.environ.get("SECRET_KEY")
