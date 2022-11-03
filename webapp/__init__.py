@@ -1,6 +1,7 @@
 from flask import Flask, render_template
+
 from webapp.wallet import Wallet
-from webapp.forms import LoginForm
+from webapp.forms import LoginForm, RegistrationForm
 
 
 def create_app():
@@ -21,6 +22,14 @@ def create_app():
         login_form = LoginForm()
         return render_template(
             "user/login.html", page_title=title, form=login_form
+        )
+
+    @app.route("/register")
+    def register():
+        form = RegistrationForm()
+        title = "Регистрация"
+        return render_template(
+            "user/registration.html", page_title=title, form=form
         )
 
     return app
