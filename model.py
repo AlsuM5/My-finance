@@ -3,6 +3,7 @@ from datetime import datetime
 from sqlalchemy.exc import SQLAlchemyError
 from db import Base, engine, db_session
 from sqlalchemy.orm import relationship
+from webapp.wallet import Wallet as PureWallet
 
 
 class Wallet(Base):
@@ -69,6 +70,17 @@ def add_transaction(value, type, wallet_id, date=None):
     except SQLAlchemyError:
         db_session.rollback()
         raise
+
+
+def load_wallet(wallet_id):
+    if wallet_id is not None:
+        wallet_db = Wallet.query.filter_by(Wallet.id == wallet_id).first()
+        if not wallet_db:
+            return PureWallet(
+                balance=wallet_db.balance,
+                reserved_balance=wallet_db.reserved_balance,
+                days_count_to_end=wallet_db.days_count_to_end,
+            )
 
 
 if __name__ == "__main__":
