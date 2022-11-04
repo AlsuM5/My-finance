@@ -32,10 +32,15 @@ def create_app():
             "user/registration.html", page_title=title, form=form
         )
 
-    @app.route("/wallets/<wallet_id>")
     def load_wallet(wallet_id):
+        return Wallet(id=wallet_id)
+
+    @app.route("/wallets/<wallet_id>")
+    def get_wallet(wallet_id):
         page_title = "My wallet"
-        wallet_id = load_wallet()
-        return Wallet("page/index.html", page_title=page_title, id=wallet_id)
+        wallets = load_wallet(wallet_id)
+        return render_template(
+            "page/index.html", page_title=page_title, wallets=wallets
+        )
 
     return app
