@@ -7,7 +7,7 @@ from db import Base
 
 @pytest.fixture
 def connection():
-    engine = create_engine('sqlite://')
+    engine = create_engine("sqlite://")
     return engine.connect()
 
 
@@ -32,4 +32,3 @@ def db_session(connection, create_db):
     yield session
 
     transaction.rollback()
-    
