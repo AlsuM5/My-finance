@@ -74,7 +74,7 @@ def add_transaction(value, type, wallet_id, date=None):
 
 def load_wallet(wallet_id):
 
-    wallet_db = Wallet.query.filter_by(id == wallet_id).first()
+    wallet_db = Wallet.query.filter_by(id=wallet_id).first()
     wallet = PureWallet(
         initial_balance=wallet_db.balance,
         days_count_to_end=wallet_db.days_count_to_end,
