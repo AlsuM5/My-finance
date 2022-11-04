@@ -46,12 +46,7 @@ def add_wallet(balance, days_count_to_end=30, reserved_balance=0):
     wallet_db.balance = balance
     wallet_db.days_count_to_end = days_count_to_end
     wallet_db.reserved_balance = reserved_balance
-    db_session.add(wallet_db)
-    try:
-        db_session.commit()
-    except SQLAlchemyError:
-        db_session.rollback()
-        raise
+    return wallet_db
 
 
 def add_transaction(value, type, wallet_id, date=None):
@@ -63,20 +58,27 @@ def add_transaction(value, type, wallet_id, date=None):
         transaction.date = date
     transaction.type = type
     transaction.wallet_id = wallet_id
-    db_session.add(transaction)
-    try:
-        db_session.commit()
-    except SQLAlchemyError:
-        db_session.rollback()
-        raise
+    return transaction
 
 
 def dump_wallet(wallet):
-    wallet_db = Wallet.query.filter(Wallet.id == wallet.id).first()
-    if not wallet_db:
-        add_wallet(
+    if not wallet.id:
+        wallet_db = Wallet.query.filter(Wallet.id == wallet.id).first()
+    else:
+        wallet_db = add_wallet(
             wallet.balance, wallet.days_count_to_end, wallet.reserved_balance
         )
+    for transaction in wallet.transactions:
+        if not transaction:
+            if not transaction.id:
+                transaction = add_transaction(
+                    transaction.value,
+                    transaction.type,
+                    wallet.id,
+                    transaction.date,
+                )
+
+    return wallet_db
 
 
 if __name__ == "__main__":
