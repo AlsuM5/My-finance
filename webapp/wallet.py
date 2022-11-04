@@ -3,7 +3,11 @@ from datetime import datetime
 
 class Wallet:
     def __init__(
-        self, days_count_to_end=30, initial_balance=0, percent_of_savings=10
+        self,
+        days_count_to_end=30,
+        initial_balance=0,
+        percent_of_savings=10,
+        id=None,
     ):
         self.transactions = []
         self.balance = initial_balance
@@ -11,6 +15,7 @@ class Wallet:
         self.days_count_to_end = days_count_to_end
         self.schedule_expenses = []
         self.percent_of_savings = percent_of_savings
+        self.id = id
 
     def get_balance(self):
         return self.balance
@@ -40,7 +45,7 @@ class Wallet:
             )
         raise PercentError("Процент отложений должен быть от 0 до 100")
 
-    def create_transaction(self, value, type="расходы", date=None):
+    def create_transaction(self, value, type="расходы", date=None, id=None):
         transaction_class = 0
         if value > 0:
             transaction_class = Income
@@ -76,7 +81,7 @@ class PercentError(WalletBaseException):
 
 
 class Transaction:
-    def __init__(self, value, type="расходы", date=None):
+    def __init__(self, value, type="расходы", date=None, id=None):
         self.value = value
         self.type = type
         self.date = date or datetime.utcnow()
