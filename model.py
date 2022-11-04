@@ -71,5 +71,13 @@ def add_transaction(value, type, wallet_id, date=None):
         raise
 
 
+def dump_wallet(wallet):
+    wallet_db = Wallet.query.filter(Wallet.id == wallet.id).first()
+    if not wallet_db:
+        add_wallet(
+            wallet.balance, wallet.days_count_to_end, wallet.reserved_balance
+        )
+
+
 if __name__ == "__main__":
     create_data_base()
