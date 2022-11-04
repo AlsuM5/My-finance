@@ -36,8 +36,6 @@ def create_app():
     def load_wallet(wallet_id):
         page_title = "My wallet"
         wallet_id = load_wallet()
-        return Wallet(
-            "page/index.html", page_title=page_title, id=wallet_id
-        )
+        return Wallet("page/index.html", page_title=page_title, id=wallet_id)
 
     return app
