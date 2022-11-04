@@ -37,9 +37,7 @@ def create_data_base():
     wallet_db = Wallet(balance=10000, days_count_to_end=30)
     db_session.add(wallet_db)
     db_session.commit()
-    transaction = add_transaction(
-        40, "Expens", wallet_db.id, datetime.today()
-    )
+    transaction = add_transaction(40, "Expens", wallet_db.id, datetime.today())
     db_session.add(transaction)
     db_session.commit()
 
