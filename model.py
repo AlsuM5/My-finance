@@ -77,8 +77,7 @@ def load_wallet(wallet_id):
         wallet_db = Wallet.query.filter_by(Wallet.id == wallet_id).first()
         if not wallet_db:
             return PureWallet(
-                balance=wallet_db.balance,
-                reserved_balance=wallet_db.reserved_balance,
+                initial_balance=wallet_db.balance,
                 days_count_to_end=wallet_db.days_count_to_end,
             )
 
