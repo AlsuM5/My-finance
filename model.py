@@ -75,11 +75,18 @@ def add_transaction(value, type, wallet_id, date=None):
 def load_wallet(wallet_id):
     if wallet_id is not None:
         wallet_db = Wallet.query.filter_by(Wallet.id == wallet_id).first()
-        if not wallet_db:
-            return PureWallet(
-                initial_balance=wallet_db.balance,
-                days_count_to_end=wallet_db.days_count_to_end,
-            )
+        wallet = PureWallet(
+            initial_balance=wallet_db.balance,
+            days_count_to_end=wallet_db.days_count_to_end,
+        )
+    for transaction_db in wallet_db.transactions:
+        wallet.create_transaction(
+            value=transaction_db.value,
+            type=transaction_db.type,
+            date=transaction_db.date,
+            id=transaction_db.id,
+        )
+    return wallet
 
 
 if __name__ == "__main__":
