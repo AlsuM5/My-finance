@@ -1,6 +1,5 @@
 from sqlalchemy import Column, Integer, String, Date, Float, ForeignKey
 from datetime import datetime
-from sqlalchemy.exc import SQLAlchemyError
 from db import Base, engine, db_session
 from sqlalchemy.orm import relationship
 from webapp.wallet import Wallet as PureWallet
@@ -34,11 +33,15 @@ class Transaction(Base):
 
 
 def create_data_base():
-
+    Base.metadata.drop_all(bind=engine)
     Base.metadata.create_all(bind=engine)
     wallet_db = Wallet(balance=10000, days_count_to_end=30)
     db_session.add(wallet_db)
     db_session.commit()
+    transaction = add_transaction(40, "Expens", wallet_db.id, datetime.today())
+    db_session.add(transaction)
+    db_session.commit()
+
     assert wallet_db.id == 1
 
 
@@ -47,15 +50,10 @@ def add_wallet(balance, days_count_to_end=30, reserved_balance=0):
     wallet_db.balance = balance
     wallet_db.days_count_to_end = days_count_to_end
     wallet_db.reserved_balance = reserved_balance
-    db_session.add(wallet_db)
-    try:
-        db_session.commit()
-    except SQLAlchemyError:
-        db_session.rollback()
-        raise
+    return wallet_db
 
 
-def add_transaction(value, type, wallet_id, date=None):
+def add_transaction(value: float, type: str, wallet_id: int, date=None):
     transaction = Transaction()
     transaction.value = value
     if date is None:
@@ -64,12 +62,26 @@ def add_transaction(value, type, wallet_id, date=None):
         transaction.date = date
     transaction.type = type
     transaction.wallet_id = wallet_id
-    db_session.add(transaction)
-    try:
-        db_session.commit()
-    except SQLAlchemyError:
-        db_session.rollback()
-        raise
+    return transaction
+
+
+def dump_wallet(wallet):
+    if not wallet.id:
+        wallet_db = Wallet.query.filter(Wallet.id == wallet.id).first()
+    else:
+        wallet_db = add_wallet(
+            wallet.balance, wallet.days_count_to_end, wallet.reserved_balance
+        )
+    for transaction in wallet.transactions:
+        if not transaction.id:
+            transaction = add_transaction(
+                transaction.value,
+                transaction.type,
+                wallet.id,
+                transaction.date,
+            )
+
+    return wallet_db
 
 
 def load_wallet(wallet_id):
@@ -90,4 +102,5 @@ def load_wallet(wallet_id):
 
 
 if __name__ == "__main__":
+
     create_data_base()
