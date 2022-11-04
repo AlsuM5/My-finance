@@ -38,9 +38,9 @@ def create_app():
     @app.route("/wallets/<wallet_id>")
     def get_wallet(wallet_id):
         page_title = "My wallet"
-        wallets = load_wallet(wallet_id)
+        wallet = load_wallet(wallet_id)
         return render_template(
-            "page/index.html", page_title=page_title, wallets=wallets
+            "page/index.html", page_title=page_title, wallet=wallet
         )
 
     return app
