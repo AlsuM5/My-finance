@@ -32,11 +32,17 @@ class Transaction(Base):
 
 
 def create_data_base():
-
+    Base.metadata.drop_all(bind=engine)
     Base.metadata.create_all(bind=engine)
     wallet_db = Wallet(balance=10000, days_count_to_end=30)
     db_session.add(wallet_db)
     db_session.commit()
+    transaction = add_transaction(
+        40, "Expens", wallet_db.id, datetime.today()
+    )
+    db_session.add(transaction)
+    db_session.commit()
+
     assert wallet_db.id == 1
 
 
@@ -48,7 +54,7 @@ def add_wallet(balance, days_count_to_end=30, reserved_balance=0):
     return wallet_db
 
 
-def add_transaction(value, type, wallet_id, date=None):
+def add_transaction(value: float, type: str, wallet_id: int, date=None):
     transaction = Transaction()
     transaction.value = value
     if date is None:
@@ -81,4 +87,5 @@ def dump_wallet(wallet):
 
 
 if __name__ == "__main__":
+
     create_data_base()
