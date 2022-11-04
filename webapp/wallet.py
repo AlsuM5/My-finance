@@ -86,6 +86,7 @@ class Transaction:
         self.type = type
         self.date = date or datetime.utcnow()
         self.futured = self.date > datetime.utcnow()
+        self.id = id
 
     def get_month_income(self):
         raise NotImplementedError
