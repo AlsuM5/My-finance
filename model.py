@@ -1,6 +1,5 @@
 from sqlalchemy import Column, Integer, String, Date, Float, ForeignKey
 from datetime import datetime
-from sqlalchemy.exc import SQLAlchemyError
 from db import Base, engine, db_session
 from sqlalchemy.orm import relationship
 
