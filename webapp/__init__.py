@@ -15,8 +15,11 @@ def create_app():
         total_income = wallet.get_current_month_expense
         total_expense = wallet.get_current_month_income
         return render_template(
-            "page/index.html", page_title=page_title, wallet=wallet,
-            total_income=total_income, total_expense=total_expense
+            "page/index.html",
+            page_title=page_title,
+            wallet=wallet,
+            total_income=total_income,
+            total_expense=total_expense
         )
 
     @app.route("/login")
