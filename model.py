@@ -72,7 +72,6 @@ def dump_wallet(wallet):
             wallet.balance, wallet.days_count_to_end, wallet.reserved_balance
         )
     for transaction in wallet.transactions:
-        
         if not transaction.id:
             transaction = add_transaction(
                 transaction.value,
