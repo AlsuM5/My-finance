@@ -66,14 +66,14 @@ def add_transaction(value: float, type: str, wallet_id: int, date=None):
 
 
 def dump_wallet(wallet):
-    if not wallet.id:
+    if wallet.id:
         wallet_db = Wallet.query.filter(Wallet.id == wallet.id).first()
     else:
         wallet_db = add_wallet(
             wallet.balance, wallet.days_count_to_end, wallet.reserved_balance
         )
     for transaction in wallet.transactions:
-        if not transaction.id:
+        if transaction.id is None:
             transaction = add_transaction(
                 transaction.value,
                 transaction.type,
