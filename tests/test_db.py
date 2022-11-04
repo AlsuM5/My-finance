@@ -46,3 +46,22 @@ def test_dump_load_wallet(db_session):
     assert wallet_db.id == 1
 
     assert wallet_db.balance == 3000
+
+
+def test_load_dump_wallet_2(db_session):
+    wallet_db_test = add_wallet(3000)
+    db_session.add(wallet_db_test)
+    db_session.commit()
+    wallet_db_test2 = add_wallet(1000)
+    db_session.add(wallet_db_test2)
+    db_session.commit()
+
+    wallet = load_wallet(wallet_db_test2.id)
+    wallet_db = dump_wallet(wallet)
+
+    assert wallet_db.id == 2
+
+    wallet = load_wallet(wallet_db_test.id)
+    wallet_db = dump_wallet(wallet)
+
+    assert wallet_db.balance == 3000
