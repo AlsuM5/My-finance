@@ -19,7 +19,7 @@ def create_app():
             page_title=page_title,
             wallet=wallet,
             total_income=total_income,
-            total_expense=total_expense
+            total_expense=total_expense,
         )
 
     @app.route("/login")
