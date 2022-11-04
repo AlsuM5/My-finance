@@ -90,7 +90,7 @@ def load_wallet(wallet_id):
     wallet = PureWallet(
         initial_balance=wallet_db.balance,
         days_count_to_end=wallet_db.days_count_to_end,
-        id=wallet_id
+        id=wallet_id,
     )
     for transaction_db in wallet_db.transactions:
         wallet.create_transaction(

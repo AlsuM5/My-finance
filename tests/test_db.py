@@ -42,7 +42,7 @@ def test_dump_load_wallet(db_session):
 
     assert wallet.id == 1
     wallet_db = dump_wallet(wallet)
-    
+
     assert wallet_db.id == 1
 
     assert wallet_db.balance == 3000
