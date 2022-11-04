@@ -1,4 +1,4 @@
-from model import add_wallet, Wallet, dump_wallet
+from model import add_wallet, Wallet, dump_wallet, load_wallet
 from webapp.wallet import Wallet as WalletWeb
 
 
@@ -21,3 +21,13 @@ def test_dump_wallet(db_session):
     db_session.commit()
 
     assert wallet_db.id == 1
+
+
+def test_load_wallet(db_session):
+    wallet_db_test = add_wallet(3000)
+    db_session.add(wallet_db_test)
+    db_session.commit()
+
+    wallet = load_wallet(wallet_db_test.id)
+
+    assert wallet.balance == 3000
