@@ -7,17 +7,20 @@
         <input type="button" name="nubex" value="Добавить расход" />
       </div>
           <h2>Ваш баланс:  {{  wallet.get_balance() }} </h2>
-      <div class="col-4">
-          <h2>Операции </h2>
+      <div class="col-8">
+          <h4>Расходы за текущий месяц: {{ wallet.get_current_month_expense() }}</h4>
+          <h4>Доходы за текущий месяц: {{ wallet.get_current_month_income() }}</h4>
+          <br></br>
+          <h2>Операции: </h2>
           <div class="row">
           <h3>
-            <ul>
-              <li>-300 Магазин продуктов</li>
-              <li>+500 Подарок от мамы</li>
-              <li>-1000 Кафе</li>
-              <li>+700 Отпускные</li>
-            </ul>
-          </h3>
+              <ul>
+                {% for transaction in wallet.transactions %}
+            <li>{{ transaction.value }} {{ transaction.description }} {{ transaction.category }}</li>
+                {% endfor %}
+              </ul>
+              </h3>
+            </div>
           </div>
         </div>
       </div>
