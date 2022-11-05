@@ -15,6 +15,9 @@
           <div class="row">
           <h3>
             <ul>
+              {% for transaction in wallet.transactions %}
+                  {{ wallet.transactions() }}
+              {% endfor %}
               <li>-300 Магазин продуктов</li>
               <li>+500 Подарок от мамы</li>
               <li>-1000 Кафе</li>
