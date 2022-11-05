@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, request
+from flask import Flask, render_template, redirect
 
 from webapp.wallet import Wallet
 from webapp.forms import LoginForm, RegistrationForm, AddTransactionForm
@@ -48,7 +48,7 @@ def create_app():
     def add_transaction(wallet_id):
         page_title = "Add transaction"
         transaction_form = AddTransactionForm()
-        if request.method == "POST":
+        if transaction_form.validate_on_submit():
             wallet = model.load_wallet(wallet_id)
             model.dump_wallet(wallet)
             return redirect("/")
