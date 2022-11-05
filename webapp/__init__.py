@@ -1,5 +1,6 @@
 from flask import Flask, render_template
 
+from model import load_wallet
 from webapp.wallet import Wallet
 from webapp.forms import LoginForm, RegistrationForm
 
@@ -31,9 +32,6 @@ def create_app():
         return render_template(
             "user/registration.html", page_title=title, form=form
         )
-
-    def load_wallet(wallet_id):
-        return Wallet(id=wallet_id)
 
     @app.route("/wallets/<wallet_id>")
     def get_wallet(wallet_id):
