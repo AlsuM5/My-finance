@@ -39,3 +39,23 @@ class RegistrationForm(FlaskForm):
         render_kw={"class": "form-control"},
     )
     submit = SubmitField("Отправить", render_kw={"class": "btn btn-primary"})
+
+
+class AddTransactionForm(FlaskForm):
+
+    value = StringField(
+        "Сумма",
+        validators=[DataRequired()],
+        render_kw={"class": "form-control"},
+    )
+    type = StringField(
+        "Тип затрат",
+        validators=[DataRequired()],
+        render_kw={"class": "form-control"},
+    )
+    date = StringField(
+        "Дата",
+        validators=[DataRequired()],
+        render_kw={"class": "form-control"},
+    )
+    submit = SubmitField("Отправить", render_kw={"class": "btn btn-primary"})
