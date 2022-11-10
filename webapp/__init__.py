@@ -2,11 +2,11 @@ from flask import Flask, render_template, flash, redirect, url_for
 from flask_login import (
     LoginManager,
     current_user,
-    login_required,
     login_user,
     logout_user
 )
 from model import User
+from webapp.decorators import admin_required
 
 from model import load_wallet
 from webapp.wallet import Wallet
@@ -63,12 +63,10 @@ def create_app():
         return redirect(url_for("index"))
 
     @app.route("/admin")
-    @login_required
+    @admin_required
     def admin_index():
-        if current_user.is_admin:
-            return "Привет админ"
-        else:
-            return "Ты не админ!"
+        title = "Панель управления"
+        return render_template("admin/index.html", page_title=title)
 
     @app.route("/register")
     def register():
