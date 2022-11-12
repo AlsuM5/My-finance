@@ -1,5 +1,5 @@
 import pytest
-from wallet import Income, PercentError, Wallet, Transaction
+from webapp.wallet import Income, PercentError, Wallet, Transaction
 from datetime import datetime, timedelta
 
 
