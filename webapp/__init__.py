@@ -44,7 +44,7 @@ def create_app():
             "page/index.html", page_title=page_title, wallet=wallet
         )
 
-    @app.route("wallets/<wallet_id>/add_transaction", methods=["GET", "POST"])
+    @app.route("/wallets/<wallet_id>/add_transaction", methods=["GET", "POST"])
     def add_transaction(wallet_id):
         page_title = "Add transaction"
         transaction_form = AddTransactionForm()
@@ -55,7 +55,7 @@ def create_app():
         return render_template(
             "page/add_transaction.html",
             page_title=page_title,
-            form=transaction_form,
+            income_form=transaction_form,
         )
 
     return app
