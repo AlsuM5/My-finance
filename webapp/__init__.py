@@ -7,6 +7,7 @@ from flask_login import (
 )
 from model import User
 from webapp.decorators import admin_required
+from db import db_session
 
 from model import load_wallet
 from webapp.wallet import Wallet
@@ -75,6 +76,23 @@ def create_app():
         return render_template(
             "user/registration.html", page_title=title, form=form
         )
+
+    @app.route('/process-reg', methods=['POST'])
+    def process_reg():
+        form = RegistrationForm()
+        if form.validate_on_submit():
+            new_user = User(
+                username=form.username.data,
+                email=form.email.data,
+                role='user'
+            )
+            new_user.set_password(form.password.data)
+            db_session.add(new_user)
+            db_session.commit()
+            flash('Вы успешно зарегистрировались!')
+            return redirect(url_for('user.login'))
+        flash('Пожалуйста, исправьте ошибки в форме')
+        return redirect(url_for('user.register'))
 
     @app.route("/wallets/<wallet_id>")
     def get_wallet(wallet_id):
