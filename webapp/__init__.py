@@ -1,4 +1,13 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, flash, redirect, url_for
+from flask_login import (
+    LoginManager,
+    current_user,
+    login_user,
+    logout_user
+)
+from model import User
+from webapp.decorators import admin_required
+from db import db_session
 
 from model import load_wallet
 from webapp.wallet import Wallet
@@ -8,6 +17,14 @@ from webapp.forms import LoginForm, RegistrationForm
 def create_app():
     app = Flask(__name__)
     app.config.from_pyfile("config.py")
+
+    login_manager = LoginManager()
+    login_manager.init_app(app)
+    login_manager.login_view = 'login'
+
+    @login_manager.user_loader
+    def load_user(user_id):
+        return User.query.get(user_id)
 
     @app.route("/")
     def index():
@@ -25,6 +42,33 @@ def create_app():
             "user/login.html", page_title=title, form=login_form
         )
 
+    @app.route("/process-login", methods=['POST'])
+    def process_login():
+        if current_user.is_authenticated:
+            return redirect(url_for("index"))
+        form = LoginForm()
+
+        if form.validate_on_submit():
+            user = User.query.filter_by(username=form.username.data).first()
+            if user and user.check_password(form.password.data):
+                login_user(user, remember=form.remember_me.data)
+                flash("Вы вошли на сайт")
+                return redirect(url_for("index"))
+
+        flash("Неправильное имя пользователя или пароль")
+        return redirect(url_for("login"))
+
+    @app.route("/logout")
+    def logout():
+        logout_user()
+        return redirect(url_for("index"))
+
+    @app.route("/admin")
+    @admin_required
+    def admin_index():
+        title = "Панель управления"
+        return render_template("admin/index.html", page_title=title)
+
     @app.route("/register")
     def register():
         form = RegistrationForm()
@@ -32,6 +76,23 @@ def create_app():
         return render_template(
             "user/registration.html", page_title=title, form=form
         )
+
+    @app.route('/process-reg', methods=['POST'])
+    def process_reg():
+        form = RegistrationForm()
+        if form.validate_on_submit():
+            new_user = User(
+                username=form.username.data,
+                email=form.email.data,
+                role='user'
+            )
+            new_user.set_password(form.password.data)
+            db_session.add(new_user)
+            db_session.commit()
+            flash('Вы успешно зарегистрировались!')
+            return redirect(url_for('user.login'))
+        flash('Пожалуйста, исправьте ошибки в форме')
+        return redirect(url_for('user.register'))
 
     @app.route("/wallets/<wallet_id>")
     def get_wallet(wallet_id):
